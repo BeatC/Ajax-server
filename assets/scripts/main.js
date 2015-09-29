@@ -5,7 +5,7 @@
 (function () {
     $('.send-post').click(function () {
         $.post('/task', {
-            id: 2
+            name: "Alan"
         }, function (res) {
             console.log('Added successfully');
         });

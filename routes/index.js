@@ -6,7 +6,7 @@ var provider = new fileProvider('../json/tasks.json');
 /* GET home page. */
 
 router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.sendfile('../assets/index.html', {root: __dirname })
 
 });
 
@@ -15,14 +15,17 @@ router.get('/', function (req, res, next) {
  */
 router.post('/task', function (req, res, next) {
   provider.load(res, function (json) {
+    var maxId = parseInt(json[0].id);
+    var newElement = req.body;
+
     for (var i = 0, length = json.length; i < length; i++) {
-      if (json[i].id === req.body.id) {
-        res.status(400);
-        res.end();
-        return false;
+      if (parseInt(json[i].id) > maxId) {
+        maxId = parseInt(json[i].id);
       }
     }
-    json.push(req.body);
+
+    newElement.id = maxId + 1;
+    json.push(newElement);
     provider.save(JSON.stringify(json), function (err) {
       if (err) {
         res.status(500);

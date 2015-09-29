@@ -1,8 +1,91 @@
 body {
   padding: 50px;
+  color: dimgrey;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+
+.showPopup{
+  display: block;
+  height: auto;
+  width: 480px;
+  border: 1px solid lightgrey;
+  -webkit-box-shadow: 8px 9px 6px -1px rgba(102,94,102,0.55);
+  -moz-box-shadow: 8px 9px 6px -1px rgba(102,94,102,0.55);
+  box-shadow: 8px 9px 6px -1px rgba(102,94,102,0.55);
+  border-radius: 15px;
+  margin: 20px auto;
+  background-color: white;
+  padding-left: 20px;
+  padding-right: 20px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+.popupWraper{
+  position: fixed;
+  height: 1300px;
+  width: 1400px;
+  display: block;
+  background-color: aliceblue;
+}
+
+.hidePopup{
+  display: none;
+}
+
+h1{
+  text-align: center;
+}
+
+.inputItem{
+  border-radius: 3px;
+  border: 1px solid lightgrey;
+  height: 30px;
+}
+
+.form-control{
+  resize: vertical;
+}
+
+.addTaskPanel {
+  margin-top: 20px;
+}
+
+.taskItem{
+  margin-bottom: 5px;
+}
+
+#inputTask{
+  width: 170px;
+}
+
+#inputHour {
+  width: 50px;
+}
+
+.submitBtn{
+  margin-left: 135px;
+  margin-top: 10px;
+}
+
+.hideBtn{
+  margin-left: 175px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.controlPanel{
+  text-align: center;
+  margin: 0 auto;
+  width: 50%;
+}
+
+.controlPanel button{
+  margin-left: 5px;
 }
