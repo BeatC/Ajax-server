@@ -225,11 +225,7 @@ var Report = React.createClass({
 
         if(isErorr == false){
             var summary = {tasks: this.state.items, today: todayValue, tomorrow: tomorValue, date: dateNow};
-            var report = JSON.stringify(summary);
-            console.log(report);
-            $.post('/task', {
-                summary
-            }, function (res) {
+            $.post('/task', {data: JSON.stringify(summary)}, function (res) {
             });
         }
     },

@@ -16,7 +16,7 @@ router.get('/', function (req, res, next) {
 router.post('/task', function (req, res, next) {
   provider.load(res, function (json) {
     var maxId = parseInt(json[0].id);
-    var newElement = req.body;
+    var newElement = JSON.parse(req.body.data);
 
     for (var i = 0, length = json.length; i < length; i++) {
       if (parseInt(json[i].id) > maxId) {
@@ -43,10 +43,11 @@ router.post('/task', function (req, res, next) {
  */
 router.put('/task', function (req, res, next) {
   var isExists = false;
+  var substVar = JSON.parse(req.body.data);
   provider.load(res, function (json) {
     for (var i = 0, length = json.length; i < length; i++) {
-      if (json[i].id === req.body.id) {
-        json[i] = req.body;
+      if (parseInt(json[i].id) === parseInt(substVar.id)) {
+        json[i] = substVar;
         isExists = true;
 
         provider.save(JSON.stringify(json), function (err) {
@@ -72,10 +73,10 @@ router.put('/task', function (req, res, next) {
 
 router.delete('/task', function (req, res, next) {
   var isExists = false;
-
+  var deleteVar = JSON.parse(req.body.data);
   provider.load(res, function (json) {
     for (var i = 0, length = json.length; i < length; i++) {
-      if (json[i].id === req.body.id) {
+      if (json[i].id === deleteVar.id) {
         isExists = true;
         json.splice(i, 1);
 

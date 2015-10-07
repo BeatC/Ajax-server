@@ -3,6 +3,18 @@
  */
 
 (function () {
+    $.ajax({
+        url: '/task',
+        type: 'PUT',
+        data: {
+            id: 1,
+            name: 'John'
+        },
+        success: function (res) {
+            console.log("Edited successfully");
+        }
+    });
+
     $('.send-post').click(function () {
         $.post('/task', {
             name: "Alan"

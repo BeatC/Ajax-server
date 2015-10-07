@@ -1,1 +1,1 @@
-[{"id":0},{"report":"{\"tasks\":[{\"name\":\"asd\",\"hour\":\"asd\"}],\"today\":\"123\",\"tomorrow\":\"zxc\",\"date\":\"Tue Sep 29 2015\"}","id":1},{"summary[tasks][0][name]":"asdasd","summary[tasks][0][hour]":"asd","summary[today]":"123","summary[tomorrow]":"zxc","summary[date]":"Tue Sep 29 2015","id":2}]
+[{"id":"1","name":"John"}]
