@@ -1,6 +1,17 @@
+(function () {
+    $.ajax({
+        url: "/task",
+        dataType: "JSON",
+        success: function(data){
+            mainData = data;
+            React.render(<Main />, document.getElementById('main'));
+        }
+    });
+})();
+
 var TaskList = React.createClass({
     render: function(){
-        return <div ref="task_list" className="taskList">
+        return <div className="taskList">
             {this.props.items.map((task, taskIndex) =>
                     <div key={taskIndex} className="TaskItem row">
                         <TaskItem taskName = {task.name} taskHour={task.hour} />
@@ -51,41 +62,45 @@ var FeedbackList = React.createClass({
     }
 });
 
-var items = [];
-var delThis = 'delThis';
-
 var TableRow = React.createClass({
-
     getInitialState: function() {
         return {isDel: '', classTPopup: 'hidePopup'}
     },
     onShow: function(){
-        this.setState({classTPopup: 'showPopup'})
+        this.setState({classTPopup: 'showPopup'});
     },
     onHide : function(){
-        this.setState({classTPopup: 'hidePopup'})
+        this.setState({classTPopup: 'hidePopup'});
     },
     onClick: function(){
         this.setState({checked: event.target.checked});
         if(this.state.checked){
             this.setState({isDel: ''});
         }else{
-
             this.setState({isDel: 'delThis'});
+           delId.push(this.props.id);
         }
     },
     render: function(){
         var checked = this.state.checked;
         return <tr  className={this.state.isDel}>
             <td><input onChange = {this.onClick} checked={checked}  type="checkbox" /></td>
-            <td>{this.props.idCol}</td>
+            <td>{this.props.id}</td>
             <td>{this.props.date}</td>
-            <td onClick={this.onShow}>{this.props.taskNumber}</td>
-            <TablePopup onHide={this.onHide} classTPop={this.state.classTPopup} />
+            <td className="warning" onClick={this.onShow}>{this.props.ntask}</td>
+            <TablePopup data={this.props.data} onHide={this.onHide} classTPop={this.state.classTPopup} />
         </tr>
+    }
+});
+var TableList = React.createClass({
+    render: function() {
+        return (<tbody>{this.props.mainData.map(function (data) {
+            return <TableRow id={data.id} date={data.date} ntask={data.tasks.length} data={data}/>;
+        })}</tbody>);
 
     }
 });
+
 
 var ControlTable = React.createClass({
     render: function(){
@@ -98,16 +113,12 @@ var ControlTable = React.createClass({
     }
 });
 
+
+var delId = [];
+
 var Main = React.createClass({
     getInitialState: function() {
-        $.ajax({
-            url: "/task",
-            dataType: "JSON",
-            success: function(data){
-                console.log(data)
-            }
-        });
-        return {classPopup: 'hidePopup'}
+        return {mainData, classPopup: 'hidePopup'}
     },
     showPopup: function(){
         this.setState({classPopup: 'showPopup'})
@@ -118,22 +129,34 @@ var Main = React.createClass({
     deleteContent: function() {
         var elements = document.getElementsByClassName('delThis');
         while(elements.length > 0){
+
+
             elements[0].parentNode.removeChild(elements[0]);
         }
+        $.ajax({
+            url: '/task',
+            type: "DELETE",
+            data: {
+                id: 2
+            },
+            success: function (res) {
+                console.log('Deleted successfully');
+            }
+        });
     },
 
     render: function(){
         return (
             <div>
                 <h1>Список задач</h1>
-                <table className='table table-bordered table-hover '>
+                <table className='table table-bordered table-hover'>
                     <tr className="info">
                         <th>#</th>
                         <th>id</th>
                         <th>Дата</th>
-                        <th>Кол-во задач открыть отчет</th>
+                        <th>Кол-во задач</th>
                     </tr>
-                    <TableRow />
+                    <TableList mainData = {mainData} />
                 </table>
                 <ControlTable deleteButton={this.deleteContent} showPopup={this.showPopup}  />
                 <Report onHide={this.onHide} classPop={this.state.classPopup} />
@@ -146,19 +169,7 @@ var TablePopup = React.createClass({
     render: function() {
         return (
         <div className={this.props.classTPop}>
-            <h1>Информацию по отчету</h1>
-                    <p>id=1 date=20.09 number=4</p>
-            <h2>Выполнены сегодня:</h2>
-            <input className="form-control" type="text" defaultValue="Задание" />
-            <input className="form-control" type="text" defaultValue="Задание" />
-            <input className="form-control" type="text" defaultValue="Задание" />
-            <input className="form-control" type="text" defaultValue="Задание" />
-            <h3>Комментарий: </h3>
-            <textarea defaultValue='Введите коментарии к задачам' ref="todayList"
-                                  className="form-control" />
-            <h3>План на завтра: </h3>
-            <textarea defaultValue='Составте план на завтра' ref="tomorrowList"
-                          className="form-control"  />
+            <h1>{this.props.data}</h1>
             <button type="button" className="btn btn-success
                     btn-lg submitBtn">Сохранить изменения</button>
             <button onClick={this.props.onHide} type="button" className="btn btn-danger hideBtn">Закрыть</button>
@@ -166,6 +177,8 @@ var TablePopup = React.createClass({
         );
     }
 });
+
+var items = [];
 
 var Report = React.createClass({
     getInitialState: function() {
@@ -263,4 +276,3 @@ var Report = React.createClass({
 
 
 
-React.render(<Main />, document.getElementById('main'));

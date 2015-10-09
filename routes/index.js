@@ -80,7 +80,7 @@ router.delete('/task', function (req, res, next) {
         isExists = true;
         json.splice(i, 1);
 
-        provider.save(JSON.stringify(json), function (err) {
+        provider.save(JSON.stringify(json), function (err) { console.log(err);
           if (err) {
             res.status(500);
           } else {
